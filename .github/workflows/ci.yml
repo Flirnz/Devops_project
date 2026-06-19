@@ -33,3 +33,15 @@ jobs:
       - name: Run Backend Tests
         run: npm test -- --coverage
         working-directory: "./backend"
+
+      - name: Install Frontend Dependencies
+        run: npm install
+        working-directory: "./frontend"
+
+      - name: Run Frontend Linter
+        run: npm run lint
+        working-directory: "./frontend"
+
+      - name: Build Frontend
+        run: npm run build
+        working-directory: "./frontend"

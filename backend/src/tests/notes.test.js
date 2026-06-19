@@ -1,4 +1,4 @@
-import { jest } from "@jest/globals";
+import { expect, jest } from "@jest/globals";
 import request from "supertest";
 
 // 1. Mock the modules
@@ -9,7 +9,9 @@ jest.unstable_mockModule("../middleware/rateLimiter.js", () => ({
 jest.unstable_mockModule("../models/Note.js", () => {
   const mockNote = {
     find: jest.fn().mockReturnThis(),
-    sort: jest.fn()
+    sort: jest.fn(),
+    findById: jest.fn(),
+    findByIdAndDelete: jest.fn()
   };
   return {
     default: mockNote
@@ -25,12 +27,12 @@ describe("GET /api/notes", () => {
     jest.clearAllMocks();
   });
 
-  test("Harus sukses mengembalikan kode 200", async () => {
+  test("should successfully return status code 200 and all notes", async () => {
     const mockNotes = [
-      { _id: "1", title: "Belajar DevOps", content: "Metode active friction sangat asyik!" }
+      { _id: "1", title: "Learning DevOps", content: "Active recall method is awesome!" }
     ];
 
-    // Mock Note.find().sort()
+    // Mock Note.find().sort() to resolve with mock data
     Note.find().sort.mockResolvedValue(mockNotes);
 
     const response = await request(app).get("/api/notes");
@@ -39,3 +41,34 @@ describe("GET /api/notes", () => {
     expect(response.body).toEqual(mockNotes);
   });
 });
+describe("GET /api/notes/:id", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  test("should successfully return status code 200 and a message:Note found", async () => {
+    const mockNote = 
+      { _id: "1", title: "Learning DevOps", content: "Active recall method is awesome!" };
+    Note.findById.mockResolvedValue(mockNote);
+
+    const response = await request(app).get("/api/notes/1");
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual(mockNote);
+
+  });
+});
+describe("DELETE /api/notes/:id", () => {
+  const mockNote = [
+      { _id: "1", title: "Learning DevOps", content: "Active recall method is awesome!" }
+    ];
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  test("should successfully return status code 200 and a message:Note deleted successfully", async () => {
+    Note.findByIdAndDelete.mockResolvedValue(mockNote);
+
+    const response = await request(app).delete("/api/notes/1");
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ message: "note deleted successfully" });
+  });
+});
+
