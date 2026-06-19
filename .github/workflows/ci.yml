@@ -1,0 +1,54 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run a one-line script
+        run: echo "Foundation Pipeline Success"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Confirmation message
+        run: node -v
+
+      - name: Install Backend Dependencies
+        run: npm install
+        working-directory: "./backend"
+
+      - name: Run Backend Linter
+        run: npm run lint
+        working-directory: "./backend"
+
+      - name: Run Backend Tests
+        run: npm test -- --coverage
+        working-directory: "./backend"
+
+      - name: Install Frontend Dependencies
+        run: npm install
+        working-directory: "./frontend"
+
+      - name: Run Frontend Linter
+        run: npm run lint
+        working-directory: "./frontend"
+
+      - name: Build Frontend
+        run: npm run build
+        working-directory: "./frontend"
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
