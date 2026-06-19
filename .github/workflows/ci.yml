@@ -21,3 +21,15 @@ jobs:
 
       - name: Confirmation message
         run: node -v
+
+      - name: Install Backend Dependencies
+        run: npm install
+        working-directory: "./backend"
+
+      - name: Run Backend Linter
+        run: npm run lint
+        working-directory: "./backend"
+
+      - name: Run Backend Tests
+        run: npm test -- --coverage
+        working-directory: "./backend"
