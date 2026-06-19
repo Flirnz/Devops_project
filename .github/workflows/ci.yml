@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Run a one-line script
         run: echo "Foundation Pipeline Success"
@@ -45,3 +47,8 @@ jobs:
       - name: Build Frontend
         run: npm run build
         working-directory: "./frontend"
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
