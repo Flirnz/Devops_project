@@ -1,0 +1,12 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a one-line script
+        run: echo "Foundation Pipeline Success"
