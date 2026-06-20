@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -17,7 +17,7 @@ jobs:
         run: echo "Foundation Pipeline Success"
 
       - name: Setup Node.js
-        uses: actions/setup-node@39370e3970a6d050c4800ad4ff1db345512b9c3f # v4.1.0
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -49,6 +49,6 @@ jobs:
         working-directory: "./frontend"
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@299e4b793aaa83bf2aba7c9c14bedbb485688ec4 # v7.1.0
+        uses: SonarSource/sonarqube-scan-action@v7
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
