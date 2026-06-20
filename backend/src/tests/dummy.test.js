@@ -1,5 +1,5 @@
 describe("Dummy Test", ()=>{
-    test("Harus sukses menjumlahkan angka", ()=>{
+    test("should successfully sum numbers", ()=>{
         expect(1+1).toBe(2);
     });
 });

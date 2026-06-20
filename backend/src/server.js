@@ -1,5 +1,4 @@
-// ==========================================
-// 1. IMPORTS (Library / Modul)
+// 1. IMPORTS
 // ==========================================
 
 import dotenv from "dotenv";
@@ -8,15 +7,13 @@ import { connectDB } from "./config/db.js";
 
 
 
+// 2. CONFIGURATIONS
 // ==========================================
-// 2. CONFIGURATIONS (Konfigurasi Global)
-// ==========================================
-dotenv.config(); // Harus di atas sebelum ada kode lain yang membaca process.env
+dotenv.config(); // Must be at the top before any other code reads process.env
 const PORT = process.env.PORT || 5001;
 
 
-// ==========================================
-// 3. DATABASE CONNECTION (Koneksi DB)
+// 3. DATABASE CONNECTION
 // ==========================================
 connectDB()
 .then(()=>{
@@ -25,7 +22,7 @@ connectDB()
         });
     })
 .catch((error) =>{
-    console.error("Server gagal dinyalakan karena koneksi databse gagal: ", error);
+    console.error("Server failed to start because database connection failed: ", error);
 });
 
 
