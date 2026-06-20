@@ -24,7 +24,7 @@ jobs:
 
       # Step 2: Securely copy the production docker-compose file to the target server
       - name: Copy docker-compose.prod.yml to Server
-        uses: appleboy/scp-action@ff85246aca539d09c680872659345719543e5904 # v1.0.0
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -34,7 +34,7 @@ jobs:
 
       # Step 3: Connect to the server via SSH and execute the deployment commands
       - name: Execute Deployment via SSH
-        uses: appleboy/ssh-action@7eaf76671ad48b25b68260d627c88b7074e42422 # v1.2.0
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
