@@ -13,15 +13,15 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true)
   useEffect(()=> {
     const fetchNotes = async ()=>{
-      console.log("1. Request fetchNotes baru saja DIMULAI...");
+      console.log("1. Request fetchNotes has just STARTED...");
       try{
         const res = await api.get("/notes");
-        console.log("2. Request SUKSES!");
+        console.log("2. Request SUCCESS!");
         setNotes(res.data);
         setIsRateLimited(false);
       }
       catch(error){
-        console.log("2. Request GAGAL! Status:", error.response?.status || "CORS/Network Error");
+        console.log("2. Request FAILED! Status:", error.response?.status || "CORS/Network Error");
         console.error("Error fetching notes",error);
         if (error.response && error.response.status === 429) {
           setIsRateLimited(true);
