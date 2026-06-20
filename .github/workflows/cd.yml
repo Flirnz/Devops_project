@@ -1,0 +1,66 @@
+# Name of the GitHub Actions workflow
+name: Continuous Deployment
+
+# Defines the trigger for this workflow
+on:
+  # Allows manual triggering of the workflow from the GitHub UI
+  workflow_dispatch:
+    inputs:
+      # Optional input parameter to specify which Docker image tag to deploy
+      image_tag:
+        description: "Docker image tag to deploy (e.g. latest, commit-sha)"
+        required: false
+        default: "latest"
+
+jobs:
+  # Deployment job definition
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Clone the repository to the GitHub runner
+      - name: Checkout Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      # Step 2: Securely copy the production docker-compose file to the target server
+      - name: Copy docker-compose.prod.yml to Server
+        uses: appleboy/scp-action@ff85246aca539d09c680872659345719543e5904 # v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "docker-compose.prod.yml"
+          target: "~/thinkboard-app"
+
+      # Step 3: Connect to the server via SSH and execute the deployment commands
+      - name: Execute Deployment via SSH
+        uses: appleboy/ssh-action@7eaf76671ad48b25b68260d627c88b7074e42422 # v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # Ensure the target directory exists and enter it
+            mkdir -p ~/thinkboard-app
+            cd ~/thinkboard-app
+
+            # Rename production docker-compose file to default name
+            mv -f docker-compose.prod.yml docker-compose.yml
+
+            # Dynamically generate .env file to supply variables to docker-compose
+            echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" > .env
+            echo "IMAGE_TAG=${{ github.event.inputs.image_tag }}" >> .env
+            echo "UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}" >> .env
+            echo "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" >> .env
+
+            # Login to Docker Hub on target host to avoid pull rate limits
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+            # Pull the latest specified image versions from registry
+            docker compose pull
+
+            # Recreate containers with new image versions gracefully
+            docker compose up -d --force-recreate --remove-orphans
+
+            # Remove old unused images to reclaim disk space
+            docker image prune -f
