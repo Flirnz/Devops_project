@@ -1,0 +1,25 @@
+# Global Configuration
+dockerUsername: "flirnz"
+imageTag: "latest"
+
+# MongoDB Database Configuration
+mongodb:
+  image: "mongo:6.0"
+  port: 27017
+
+# Backend API Configuration
+backend:
+  image: "flirnz-thinkboard-backend"
+  port: 5001
+  replicaCount: 1
+
+# Frontend Web Configuration
+frontend:
+  image: "flirnz-thinkboard-frontend"
+  port: 80
+  replicaCount: 1
+
+# Upstash Redis Secret Configuration (Used by Backend)
+upstash:
+  redisUrl: "https://nice-grackle-144306.upstash.io"
+  redisToken: "gQAAAAAAAjOyAAIgcDI3ZDg3NjkyYjE2ZTE0MTlkODFmZjUwNDdmMjkwZDI5ZQ"
