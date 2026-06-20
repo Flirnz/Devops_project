@@ -1,12 +1,13 @@
 import cors from "cors";
 import express from "express";
-import path from "path";
+import path from "node:path";
 import notesRoutes from "./routes/notesRoutes.js";
 import rateLimiter from "./middleware/rateLimiter.js"
 // ==========================================
 // 4. INITIALIZATION (Inisialisasi App)
 // ==========================================
 const app = express();
+app.disable('x-powered-by');
 const __dirname = path.resolve();
 
 // ==========================================
