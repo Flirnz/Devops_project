@@ -1,0 +1,47 @@
+services:
+  mongodb: 
+    image: mongo:6.0
+    container_name: thinkboard-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - thinkboard-network
+  
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: thinkboard-backend
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/thinkboard
+      - PORT=5001
+      - NODE_ENV=production
+      - UPSTASH_REDIS_REST_URL=${UPSTASH_REDIS_REST_URL}
+      - UPSTASH_REDIS_REST_TOKEN=${UPSTASH_REDIS_REST_TOKEN}
+    depends_on:
+      - mongodb
+    networks:
+      - thinkboard-network
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: thinkboard-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - thinkboard-network
+
+volumes:
+  mongo_data:
+
+networks:
+  thinkboard-network:
+    driver: bridge
