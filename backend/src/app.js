@@ -28,6 +28,12 @@ if(process.env.NODE_ENV !== "production"){
 
 app.use(express.json()); // Placed above to allow all downstream routes to read JSON body
 app.use(rateLimiter);
+
+// Health check endpoint for container health checks
+app.get("/api/health", (req, res) => {
+    res.status(200).json({ status: "UP" });
+});
+
 app.use("/api/notes", notesRoutes);
 
 if (process.env.NODE_ENV === "production") {

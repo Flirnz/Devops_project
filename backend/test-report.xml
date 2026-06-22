@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="D:\DEV\Universities\SMT4\Devops\Project\backend\src\tests\health.test.js">
+    <testCase name="Health Check API GET /api/health should return status 200 and state UP" duration="16"/>
+  </file>
+  <file path="D:\DEV\Universities\SMT4\Devops\Project\backend\src\tests\notes.test.js">
+    <testCase name="Notes API Integration Tests GET /api/notes should successfully return status code 200 and all notes" duration="6"/>
+    <testCase name="Notes API Integration Tests GET /api/notes should return 500 when database query fails" duration="13"/>
+    <testCase name="Notes API Integration Tests GET /api/notes/:id should successfully return status code 200 and the note object" duration="3"/>
+    <testCase name="Notes API Integration Tests GET /api/notes/:id should return 404 if the note is not found" duration="2"/>
+    <testCase name="Notes API Integration Tests GET /api/notes/:id should return 500 if database query fails" duration="3"/>
+    <testCase name="Notes API Integration Tests POST /api/notes should successfully create a new note and return 201" duration="8"/>
+    <testCase name="Notes API Integration Tests POST /api/notes should return 500 if save operation fails" duration="3"/>
+    <testCase name="Notes API Integration Tests PUT /api/notes/:id should successfully update a note and return 200" duration="3"/>
+    <testCase name="Notes API Integration Tests PUT /api/notes/:id should return 404 if the note to update does not exist" duration="2"/>
+    <testCase name="Notes API Integration Tests PUT /api/notes/:id should return 500 if update fails" duration="2"/>
+    <testCase name="Notes API Integration Tests DELETE /api/notes/:id should successfully delete a note and return 200" duration="1"/>
+    <testCase name="Notes API Integration Tests DELETE /api/notes/:id should return 404 if the note to delete does not exist" duration="1"/>
+    <testCase name="Notes API Integration Tests DELETE /api/notes/:id should return 500 if delete operation fails" duration="3"/>
+  </file>
+  <file path="D:\DEV\Universities\SMT4\Devops\Project\backend\src\tests\dummy.test.js">
+    <testCase name="Dummy Test should successfully sum numbers" duration="1"/>
+  </file>
+</testExecutions>
