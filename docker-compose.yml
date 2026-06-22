@@ -8,6 +8,12 @@ services:
       - mongo_data:/data/db
     networks:
       - thinkboard-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
   
   backend:
     build:
@@ -23,9 +29,16 @@ services:
       - UPSTASH_REDIS_REST_URL=${UPSTASH_REDIS_REST_URL}
       - UPSTASH_REDIS_REST_TOKEN=${UPSTASH_REDIS_REST_TOKEN}
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     networks:
       - thinkboard-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5001/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
   
   frontend:
     build:
@@ -35,7 +48,8 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - thinkboard-network
 
