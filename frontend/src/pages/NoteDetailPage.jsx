@@ -92,10 +92,10 @@ const NoteDetailPage = () => {
         <div className='card bg-base-100'>
           <div className='card-body'>
               <div className='form-control mb-4'>
-                <label className='label'>
+                <label htmlFor="note-title" className='label'>
                   <span className='label-text'>Title</span>
                 </label>
-                <input type="text" 
+                <input id="note-title" type="text" 
                         placeholder='Notetitle'
                         className='input input-bordered'
                         value={note.title}
@@ -103,10 +103,11 @@ const NoteDetailPage = () => {
                 />
               </div>
               <div className='form-control mb-4'>
-                <label className='label'>
+                <label htmlFor="note-content" className='label'>
                   <span className='label-text'>Content</span>
                 </label>
                 <textarea
+                  id="note-content"
                   placeholder='Write your text Here'
                   className='textarea textarea-bordered h-32'
                   value={note.content}
