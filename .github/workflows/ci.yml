@@ -79,19 +79,19 @@ jobs:
         continue-on-error: true
 
       - name: Transform Backend Lint Report
-        uses: MeiCli/common-lint-reporter/transformer/eslint@v2.0.5
+        uses: MeilCli/common-lint-reporter/transformer/eslint@v2.0.5
         with:
           report_files: backend/eslint-report.json
           output_path: eslint_backend.json
 
       - name: Transform Frontend Lint Report
-        uses: MeiCli/common-lint-reporter/transformer/eslint@v2.0.5
+        uses: MeilCli/common-lint-reporter/transformer/eslint@v2.0.5
         with:
           report_files: frontend/eslint-report.json
           output_path: eslint_frontend.json
 
       - name: Upload Lint Report
-        uses: MeiCli/common-lint-reporter@v2.0.5
+        uses: MeilCli/common-lint-reporter@v2.0.5
         with:
           report_type: "check_run"
           report_name: "Lint Report"
