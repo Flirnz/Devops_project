@@ -1,5 +1,4 @@
 import { PenSquareIcon, Trash2Icon } from 'lucide-react'
-import React from 'react'
 import { Link } from 'react-router'
 import { formateDate } from '../lib/utils'
 import api from '../lib/axios'

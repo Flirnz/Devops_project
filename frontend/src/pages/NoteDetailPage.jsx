@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router';
 import api from '../lib/axios';
 import toast from 'react-hot-toast';
