@@ -64,6 +64,7 @@ jobs:
           name: Jest Tests
           path: backend/junit.xml
           reporter: jest-junit
+          use-actions-summary: 'false'
 
       - name: Report Code Coverage
         uses: irongut/CodeCoverageSummary@v1.3.0
