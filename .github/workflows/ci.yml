@@ -49,7 +49,7 @@ jobs:
         working-directory: "./backend"
         continue-on-error: true
         env:
-          JEST_JUNIT_OUTPUT_DIR: "./backend"
+          JEST_JUNIT_OUTPUT_DIR: "."
           JEST_JUNIT_OUTPUT_NAME: "junit.xml"
 
       - name: Report Test Results
