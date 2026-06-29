@@ -4,21 +4,21 @@
     <testCase name="Dummy Test should successfully sum numbers" duration="5"/>
   </file>
   <file path="/home/ferdinand/DEV/Uni/DevOps/Project/Devops_project/backend/src/tests/notes.test.js">
-    <testCase name="Notes API Integration Tests GET /api/notes should successfully return status code 200 and all notes" duration="40"/>
-    <testCase name="Notes API Integration Tests GET /api/notes should return 500 when database query fails" duration="18"/>
-    <testCase name="Notes API Integration Tests GET /api/notes/:id should successfully return status code 200 and the note object" duration="4"/>
-    <testCase name="Notes API Integration Tests GET /api/notes/:id should return 404 if the note is not found" duration="3"/>
+    <testCase name="Notes API Integration Tests GET /api/notes should successfully return status code 200 and all notes" duration="28"/>
+    <testCase name="Notes API Integration Tests GET /api/notes should return 500 when database query fails" duration="16"/>
+    <testCase name="Notes API Integration Tests GET /api/notes/:id should successfully return status code 200 and the note object" duration="5"/>
+    <testCase name="Notes API Integration Tests GET /api/notes/:id should return 404 if the note is not found" duration="4"/>
     <testCase name="Notes API Integration Tests GET /api/notes/:id should return 500 if database query fails" duration="5"/>
-    <testCase name="Notes API Integration Tests POST /api/notes should successfully create a new note and return 201" duration="18"/>
+    <testCase name="Notes API Integration Tests POST /api/notes should successfully create a new note and return 201" duration="15"/>
     <testCase name="Notes API Integration Tests POST /api/notes should return 500 if save operation fails" duration="5"/>
     <testCase name="Notes API Integration Tests PUT /api/notes/:id should successfully update a note and return 200" duration="4"/>
     <testCase name="Notes API Integration Tests PUT /api/notes/:id should return 404 if the note to update does not exist" duration="3"/>
-    <testCase name="Notes API Integration Tests PUT /api/notes/:id should return 500 if update fails" duration="5"/>
+    <testCase name="Notes API Integration Tests PUT /api/notes/:id should return 500 if update fails" duration="4"/>
     <testCase name="Notes API Integration Tests DELETE /api/notes/:id should successfully delete a note and return 200" duration="3"/>
-    <testCase name="Notes API Integration Tests DELETE /api/notes/:id should return 404 if the note to delete does not exist" duration="2"/>
+    <testCase name="Notes API Integration Tests DELETE /api/notes/:id should return 404 if the note to delete does not exist" duration="3"/>
     <testCase name="Notes API Integration Tests DELETE /api/notes/:id should return 500 if delete operation fails" duration="4"/>
   </file>
   <file path="/home/ferdinand/DEV/Uni/DevOps/Project/Devops_project/backend/src/tests/health.test.js">
-    <testCase name="Health Check API GET /api/health should return status 200 and state UP" duration="30"/>
+    <testCase name="Health Check API GET /api/health should return status 200 and state UP" duration="37"/>
   </file>
 </testExecutions>

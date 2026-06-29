@@ -3,12 +3,13 @@ import { Link } from 'react-router'
 import { formateDate } from '../lib/utils'
 import api from '../lib/axios'
 import toast from 'react-hot-toast'
+import PropTypes from 'prop-types'
 
 
 const NoteCard = ({note,setNotes}) => {
   const handleDelete = async (e,id)=>{
     e.preventDefault();
-    if (!window.confirm("Are you sure you want to delete this note?")) return;
+    if (!globalThis.confirm("Are you sure you want to delete this note?")) return;
     try{
       setNotes((prev)=>prev.filter(note=>note._id !== id))
       await api.delete(`/notes/${id}`);
@@ -42,6 +43,16 @@ const NoteCard = ({note,setNotes}) => {
         </div>
     </Link>
   )
+}
+
+NoteCard.propTypes = {
+  note: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+  }).isRequired,
+  setNotes: PropTypes.func.isRequired,
 }
 
 export default NoteCard

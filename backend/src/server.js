@@ -15,15 +15,14 @@ const PORT = process.env.PORT || 5001;
 
 // 3. DATABASE CONNECTION
 // ==========================================
-connectDB()
-.then(()=>{
+try {
+    await connectDB();
     app.listen(PORT, () => {
         console.log(`Server started on: http://localhost:${PORT}`)
-        });
-    })
-.catch((error) =>{
+    });
+} catch (error) {
     console.error("Server failed to start because database connection failed: ", error);
-});
+}
 
 
 
