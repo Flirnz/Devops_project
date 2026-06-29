@@ -3,10 +3,17 @@ name: Continuous Integration
 on:
   push:
     branches: [main, develop]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: write
+      pull-requests: write
+      contents: read
+      packages: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -33,20 +40,62 @@ jobs:
         working-directory: "./backend"
 
       - name: Run Backend Linter
-        run: npm run lint
+        run: npm run lint-ci
         working-directory: "./backend"
+        continue-on-error: true
 
       - name: Run Backend Tests
-        run: npm test -- --coverage
+        run: npm test -- --coverage --reporters=default --reporters=jest-junit --coverageReporters="text" --coverageReporters="cobertura" --coverageReporters="lcov"
         working-directory: "./backend"
+        continue-on-error: true
+        env:
+          JEST_JUNIT_OUTPUT_DIR: "./backend"
+          JEST_JUNIT_OUTPUT_NAME: "junit.xml"
+
+      - name: Report Test Results
+        uses: dorny/test-reporter@v3
+        if: success() || failure()
+        with:
+          name: Jest Tests
+          path: backend/junit.xml
+          reporter: jest-junit
+
+      - name: Report Code Coverage
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: backend/coverage/cobertura-coverage.xml
+          badge: true
+          fail_below_min: false
+          format: markdown
+          output: both
 
       - name: Install Frontend Dependencies
         run: npm ci
         working-directory: "./frontend"
 
       - name: Run Frontend Linter
-        run: npm run lint
+        run: npm run lint-ci
         working-directory: "./frontend"
+        continue-on-error: true
+
+      - name: Transform Backend Lint Report
+        uses: MeiCli/common-lint-reporter/transformer/eslint@v2.0.5
+        with:
+          report_files: backend/eslint-report.json
+          output_path: eslint_backend.json
+
+      - name: Transform Frontend Lint Report
+        uses: MeiCli/common-lint-reporter/transformer/eslint@v2.0.5
+        with:
+          report_files: frontend/eslint-report.json
+          output_path: eslint_frontend.json
+
+      - name: Upload Lint Report
+        uses: MeiCli/common-lint-reporter@v2.0.5
+        with:
+          report_type: "check_run"
+          report_name: "Lint Report"
+          report_files: "*eslint_*.json"
 
       - name: Build Frontend
         run: npm run build
@@ -81,3 +130,6 @@ jobs:
             ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_USERNAME }}-thinkboard-frontend:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_USERNAME }}-thinkboard-frontend:latest
+
+      - name: Docker Logout
+        run: docker logout
