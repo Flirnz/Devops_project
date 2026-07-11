@@ -2,8 +2,18 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [main, develop]
+    branches: [feature/rebuild-init]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Test
+        run: echo "Test success"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
