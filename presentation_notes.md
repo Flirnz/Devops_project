@@ -75,6 +75,7 @@
 |---|---------|--------|-------|
 | 1 | Jest default tidak mensupport ES Modules (`import/export`) bawaan secara native | Menggunakan flag Node.js `--experimental-vm-modules` saat eksekusi Jest bin di script `npm test` | Phase 1 (Backend Config) |
 | 2 | Integrasi Linter (ESLint) ke CI/CD agar hasilnya bisa dilaporkan secara visual di PR GitHub | Menambahkan script `lint-ci` yang memformat output linter ke file JSON (`eslint-report.json`) agar bisa di-parse oleh GitHub Actions runner | Phase 1 (Backend Config) |
+| 3 | Waktu eksekusi pipeline CI lambat karena mengunduh `node_modules` berulang kali setiap push | Menggunakan GitHub Actions Dependency Caching (`cache: "npm"`) yang mendeteksi perubahan pada `package-lock.json` backend dan frontend | Phase 5 (CI Setup) |
 
 **Detail-Notizen:**
 
@@ -85,6 +86,13 @@
 ### Problem 2: Visualisasi Laporan ESLint di GitHub PR
 * **Masalah:** Jika linter hanya dijalankan secara mentah (`eslint .`), output teks terminal sulit dibaca secara dinamis dari interface Pull Request GitHub.
 * **Lösung:** Membuat script khusus `lint-ci` dengan konfigurasi output JSON: `eslint . --format json --output-file eslint-report.json || true`. File JSON ini kemudian dibaca oleh parser di GitHub Actions runner untuk memberikan anotasi visual langsung di baris kode PR. Penggunaan `|| true` mencegah runner langsung crash akibat warning gaya penulisan biasa, sehingga analisis linter dapat diselesaikan sepenuhnya.
+
+### Problem 3: Optimasi Waktu Build Pipeline CI (Dependency Caching)
+* **Masalah:** Setiap kali developer melakukan push kode ke repositori, runner GitHub Actions harus membuat environment baru dan menjalankan instalasi library (`npm ci`). Proses mengunduh ratusan library dari internet memakan waktu yang lama dan memboroskan resource.
+* **Lösung & Cara Kerja:** Kita mengaktifkan fitur caching bawaan GitHub Actions menggunakan `actions/setup-node@v4` dengan parameter `cache: "npm"` dan memetakan path file lock backend/frontend.
+  * **Cara Kerja:** GitHub Actions akan membuat hash key unik berdasarkan isi file `package-lock.json`. Selama tidak ada penambahan atau perubahan versi library di `package-lock.json`, key tersebut akan tetap sama. Runner akan langsung memulihkan folder cache dependency dari server internal GitHub secara instan (tanpa download ulang dari internet).
+  * **Kapan Cache Diperbarui (Invalidated)?** Jika kita mengubah versi library atau menambah package baru (sehingga isi `package-lock.json` berubah), key hash-nya akan berubah. Runner akan mendeteksi *cache miss*, mengunduh library baru dari internet, dan menyimpan cache baru tersebut untuk push berikutnya.
+
 
 ---
 
