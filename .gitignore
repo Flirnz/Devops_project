@@ -1,11 +1,33 @@
-node_modules/
-.backup_ref/
-project_backup.tar.gz
-*.tar.gz
-.env
-eslint-report.json
-test-report.xml
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-dist/
-build/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.env
+
+# Test coverage
 coverage/
+
+implementation_plan.md
+.cursorrules
+devops_learning_material.md

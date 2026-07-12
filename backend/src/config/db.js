@@ -1,14 +1,17 @@
-import mongoose from "mongoose"
-import dns from "node:dns"
+import mongoose from 'mongoose'
+import dns from 'node:dns'
 
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
-export default async function connectDB() {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log("MongoDB terhubung");
-    } catch (error) {
-        console.log(`Gagal terhubung ke database: ${error.message}`);
+export const connectDB = async ()=>{
+    try{
+        await mongoose.connect(process.env.MONGO_URI)
+        console.log("MONGODB CONNECTED SUCCESSFULLY");
+
+    }
+    catch(error){
+        console.error("Error Connecting to MongoDB",error)
         process.exit(1);
+
     }
 }
