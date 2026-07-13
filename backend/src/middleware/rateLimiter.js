@@ -1,5 +1,10 @@
 import ratelimit from "../config/upstash.js"
 const rateLimiter = async (req,res,next)=>{
+    // Bypass rate limiting if Upstash Redis credentials are not configured
+    if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+        return next();
+    }
+
     try{
         const {success} = await ratelimit.limit("my-limit-key");
 
