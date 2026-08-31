@@ -32,4 +32,6 @@ implementation_plan.md
 .cursorrules
 devops_learning_material.md
 ci_refactoring_plan_*.md
+.backup_*
+
 
